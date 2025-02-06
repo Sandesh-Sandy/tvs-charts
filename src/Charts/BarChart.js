@@ -3,6 +3,16 @@ import * as d3 from 'd3';
 
 const D3BarChart = () => {
   const svgRef = useRef(null);
+  // Append a tooltip div
+const tooltip = d3.select("body")
+.append("div")
+.style("position", "absolute")
+.style("background", "#fff")
+.style("border", "1px solid #ccc")
+.style("padding", "5px")
+.style("border-radius", "4px")
+.style("font-size", "12px")
+.style("display", "none");
 
   const data = [
     { period: '2021', Plan: 20, RevisedPlan: 19, LastYearActuals: 6 },
@@ -104,13 +114,25 @@ const D3BarChart = () => {
     data.forEach(d => {
       svg.append('g')
         .selectAll('rect')
-        .data(['Plan', 'RevisedPlan', 'LastYearActuals'])
+        .data(data.flatMap(d => ['Plan', 'RevisedPlan', 'LastYearActuals'].map(key => ({ period: d.period, key, value: d[key] }))))
         .join('rect')
-        .attr('x', key => x0(d.period) + x1(key))
-        .attr('y', key => y(d[key] || 0))
+        .attr('x', d => x0(d.period) + x1(d.key))
+        .attr('y', d => y(d.value || 0))
         .attr('width', x1.bandwidth())
-        .attr('height', key => height - y(d[key] || 0))
-        .attr('fill', key => color(key));
+        .attr('height', d => height - y(d.value || 0))
+        .attr('fill', d => color(d.key)).on("mouseover", (event, d) => {
+          tooltip.style("display", "block")
+            .html(`${d.key}: ${d.value} `)
+            .style("left", `${event.pageX + 10}px`)
+            .style("top", `${event.pageY - 20}px`);
+        })
+        .on("mousemove", (event) => {
+          tooltip.style("left", `${event.pageX + 10}px`)
+            .style("top", `${event.pageY - 20}px`);
+        })
+        .on("mouseout", () => {
+          tooltip.style("display", "none");
+        })
     });
 
     // Add legend
