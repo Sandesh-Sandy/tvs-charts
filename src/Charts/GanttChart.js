@@ -111,14 +111,14 @@ const D3GanttChart = () => {
 
     const legend = svg
       .append("g")
-      .attr("transform", `translate(${width - 150}, ${margin.top - 30})`); // Moves it above the graph
+      .attr("transform", `translate(${width - 150}, ${20})`); // Moves it above the graph
 
     // Add background rectangle
     legend
       .append("rect")
       .attr("x", -10)
       .attr("y", -10)
-      .attr("width", 130)
+      .attr("width", 150)
       .attr("height", 70)
       .attr("fill", "#fff") // White background
       .attr("stroke", "#ccc") // Light gray border
@@ -133,13 +133,13 @@ const D3GanttChart = () => {
 
       legendRow
         .append("rect")
-        .attr("width", 10)
+        .attr("width", 20)
         .attr("height", 10)
         .attr("fill", color(key));
 
       legendRow
         .append("text")
-        .attr("x", 15)
+        .attr("x", 25)
         .attr("y", 10)
         .text(key)
         .style("font-size", "12px")
