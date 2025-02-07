@@ -8,7 +8,7 @@ import GanttChart from "./Charts/GanttChart";
 function App() {
   return (
     <div className='App'>
-      <BarChart />
+      <MilestoneChart />
     </div>
   );
 }
