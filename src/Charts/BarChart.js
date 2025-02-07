@@ -63,7 +63,7 @@ const D3BarChart = () => {
       .range([0, x0.bandwidth()])
       .padding(0.05);
 
-    const y = d3.scaleLinear().domain([0, 20.1]).range([height, 0]);
+    const y = d3.scaleLinear().domain([0, 20]).range([height, 0]);
 
     // Add gridlines
     svg
@@ -72,9 +72,9 @@ const D3BarChart = () => {
       .call(
         d3
           .axisLeft(y)
-          .tickValues(d3.range(0, 22.5, 2.5))
+          .tickValues(d3.range(0, 22, 2.5))
+          .tickFormat(d3.format(".1f"))
           .tickSize(-width)
-          .tickFormat("")
       )
       .style("stroke-dasharray", "3 3")
       .style("stroke-opacity", 0.2);
@@ -87,10 +87,10 @@ const D3BarChart = () => {
       .style("stroke-dasharray", "3 3")
       .style("stroke-opacity", 0.2)
       .selectAll("text")
-      .style("text-anchor", "middle");
-
-    // Add Y axis
-    svg.append("g").call(d3.axisLeft(y));
+      .style("text-anchor", "middle")
+      .attr("dx", "-1.5em")
+      .attr("dy", "0.8em")
+      .attr("transform", "rotate(-45)");
 
     // Add X axis label
     svg
@@ -153,38 +153,42 @@ const D3BarChart = () => {
         });
     });
 
-    // Add legend
     const legend = svg
       .append("g")
-      .attr("transform", `translate(${width + 10}, 0)`);
+      .attr("transform", `translate(${width - 150}, ${20})`); // Moves it above the graph
+
+    // Add background rectangle
+    legend
+      .append("rect")
+      .attr("x", -10)
+      .attr("y", -10)
+      .attr("width", 150)
+      .attr("height", 70)
+      .attr("fill", "#fff") // White background
+      .attr("stroke", "#ccc") // Light gray border
+      .attr("rx", 5) // Rounded corners
+      .attr("ry", 5)
+      .style("opacity", 0.8); // Slight transparency
 
     ["Plan", "Revised Plan", "Last Year Actuals"].forEach((key, i) => {
       const legendRow = legend
         .append("g")
-        .attr("transform", `translate(0, ${i * 20})`);
+        .attr("transform", `translate(10, ${i * 20})`);
 
       legendRow
         .append("rect")
-        .attr("width", 10)
+        .attr("width", 20)
         .attr("height", 10)
         .attr("fill", color(key));
 
       legendRow
         .append("text")
-        .attr("x", 15)
+        .attr("x", 25)
         .attr("y", 10)
         .text(key)
-        .style("font-size", "12px");
+        .style("font-size", "12px")
+        .style("fill", "#000"); // Black text for contrast
     });
-
-    // Add title
-    svg
-      .append("text")
-      .attr("x", width / 2)
-      .attr("y", 0 - margin.top / 2)
-      .attr("text-anchor", "middle")
-      .style("font-size", "16px")
-      .text("Bar Graph Representation of Plans and Actuals");
   }, []);
 
   return (
