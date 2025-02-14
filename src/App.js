@@ -5,11 +5,12 @@ import LineChart from "./Charts/LineChart";
 import MilestoneChart from "./Charts/MileStone";
 import GanttChart from "./Charts/GanttChart";
 import RetailMarketShareChart from "./Charts/MarketShareChart";
+import EmployeeExperienceChart from "./Charts/BarLineChart";
 
 function App() {
   return (
     <div className='App'>
-      <RetailMarketShareChart />
+      <EmployeeExperienceChart />
     </div>
   );
 }
